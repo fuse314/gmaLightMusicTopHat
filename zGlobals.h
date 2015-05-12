@@ -10,11 +10,12 @@
 #define DELAY_NORMAL 7
 #define DELAY_FAST 4
 #define DELAY_SLOW 18
-#define DELAY_FIRE 50
-#define DELAY_KR 25
+#define DELAY_FIRE 10
+#define DELAY_KR 10
 
-#define NORMBRIGHT 40  // maximum brightness of leds (0-255)
-#define MAXBRIGHT 120  // used for "find me" mode
+#define NORMBRIGHT 32  // maximum brightness of leds (0-255)
+
+#define FASTLED_ALLOW_INTERRUPTS 0
 
 #define DIMSPEED 16     // the higher the faster
 //#define DIMSPEED_KR 35

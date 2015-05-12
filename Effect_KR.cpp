@@ -5,8 +5,10 @@
 #include "zEffectClass.h"
 #include "LEDColorMgt.h"
 
-#define KR_WIDTH 7     // width of KR-band
+#define KR_WIDTH 9     // width of KR-band
+#define KR_BORDER KR_WIDTH/3
 #define KR_DIMSPEED 35
+#define KR_BPM 12      // 5 seconds per left-right swipe
 
 class EffectKR : public EffectClass {
 
@@ -33,24 +35,20 @@ class EffectKR : public EffectClass {
       break;
     }
     
+    uint8_t startPos = beatsin8(KR_BPM,0,M_WIDTH-KR_WIDTH);
     for(uint8_t i=0; i<M_HEIGHT; i++) {
-      uint16_t startIndex = getKRLedIndex(i, _cnf->currFrame, KR_WIDTH);
-      uint16_t endIndex;
-      if(i%2==0) {
-        endIndex = startIndex + KR_WIDTH;
-        for(uint16_t j=startIndex; j<endIndex; j++) {
-          if(j==startIndex || j==endIndex-1) { // fade edges for better effect
-            _leds[j] += _currColor - CRGB(128,128,128);
-          } else {
-            _leds[j] += _currColor;
+      for(uint8_t j=startPos;j<startPos+KR_WIDTH;j++) {
+      	_leds[XY(i,j)] += _currColor;
+      	// fade out edges of square. -- idea: fade out in a circle or oval to get more of a HAL-9000 look...
+        if((j<startPos+KR_BORDER) || (j>(startPos+KR_WIDTH-1-KR_BORDER))) {
+          _leds[XY(i,j)].fadeToBlackBy(64);
+        }
+      	if(i==0 || i==(M_HEIGHT-1)) {
+      	  _leds[XY(i,j)].fadeToBlackBy(128);
+          if(j==startPos || j==(startPos+KR_WIDTH-1)) {
+            _leds[XY(i,j)].fadeToBlackBy(64);
           }
-        }
-      } else {
-        startIndex += 1;
-        endIndex = startIndex - KR_WIDTH;
-        for(uint16_t j=endIndex; j<startIndex; j++) {
-          _leds[j] += _currColor;
-        }
+      	}
       }
     }
   }

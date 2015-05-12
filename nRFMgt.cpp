@@ -33,6 +33,7 @@ to get all variables:
 RF24 radio(9,10);
 
 void RF_Init() {
+  /*
   radio.begin();
   radio.setDataRate(RF24_1MBPS);  // RF24_250KBPS
   radio.setChannel(50);    // 2.450 GHz
@@ -46,6 +47,7 @@ void RF_Init() {
   radio.openReadingPipe(1,RF_CONTROL_THE_HAT_PIPE);
 
   radio.startListening();
+  */
 }
 
 void RF_SoundForEveryone(Config_t *_cnf) {
@@ -61,6 +63,7 @@ void RF_SoundForEveryone(Config_t *_cnf) {
 }
 
 void RF_Read() {
+  /*
   if(radio.available()) {
     rf_hat_payload_t payload;
     radio.read( &payload, sizeof(payload));
@@ -69,6 +72,7 @@ void RF_Read() {
       RF_RgbLightCommand(&payload);
     }
   }
+  */
 }
 
 void RF_RgbLightCommand(rf_hat_payload_t *_command) {

@@ -24,12 +24,14 @@ class EffectRainbow : public EffectClass {
   void step(Config_t *_cnf, CRGB* _leds) {
     switch(_effectMode) {
       case 0:
-        fill_rainbow( &(_leds[0]), M_WIDTH, _cnf->currFrame % 256);
+        for(uint8_t i=0;i<M_WIDTH;i++) {
+          _leds[XY(i,0)] = Wheel(_cnf->currFrame); // fill_rainbow does not work with vertical matrix :(
+        }
         copyRowToAll(_leds);
       break;
       case 1:
         for(uint8_t i=0;i<M_WIDTH;i++) {
-          _leds[i] = Wheel(_cnf->currFrame);
+          _leds[XY(i,0)] = Wheel(_cnf->currFrame);
         }
         copyRowToAll(_leds);
       break;
@@ -46,7 +48,7 @@ class EffectRainbow : public EffectClass {
       case 4:
         for(uint8_t i=0; i<M_WIDTH; i++) {
           for(uint8_t j=0; j<M_HEIGHT; j++) {
-            _leds[XY(i,j)] = CHSV(_cnf->currHue,255,quadwave8(i*32+j*32+_pos));
+            _leds[XY(i,j)] = CHSV(_cnf->currHue,255,quadwave8((i*32)+(j*32)+_pos));
           }
         }
         _pos-=4;

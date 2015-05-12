@@ -38,9 +38,10 @@ CRGB Wheel(uint16_t _wheelPos)
 }
 
 void copyRowToAll( CRGB* _leds ) {
-  for(uint8_t y=1; y<M_HEIGHT; y++) {
-    for(uint8_t x=0; x<M_WIDTH; x++) {
-      _leds[XY(x,y)] = _leds[XY(x,0)];
+  for(uint8_t x=0; x<M_WIDTH; x++) {
+    CRGB cCurr = _leds[XY(x,0)];
+    for(uint8_t y=1; y<M_HEIGHT; y++) {
+      _leds[XY(x,y)] = cCurr;
     }
   }
 }
@@ -74,16 +75,6 @@ void shiftLeds( int8_t _distance, CRGB* _leds ) {
   }
 }
 
-uint16_t getKRLedIndex( uint8_t _row, uint16_t _rowindex, uint8_t _width) {
-  // function to get Knight Rider LED index per row
-  uint8_t newledsperrow = M_WIDTH-_width+1;
-  uint16_t ret = _rowindex % (newledsperrow * 2);
-  if(ret >= newledsperrow) {
-    ret = ret - newledsperrow;
-    ret = newledsperrow-1-ret;
-  }
-  return XY(ret,_row);
-}
 
 void dimLeds(uint8_t _dimspeed, CRGB* _leds, uint8_t _random) {
   // dim contents of all leds by _dimspeed

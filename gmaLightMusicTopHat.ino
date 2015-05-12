@@ -1,7 +1,7 @@
 /*
   Three LED Strips mounted on hat for music festivals
   using Teensy FFT library and microphone to react to music
-  (c) 2012-2014 by Gottfried Mayer www.gma.name
+  (c) 2012-2015 by Gottfried Mayer www.gma.name
   
   Uses FastLED to control WS2811 controller chips
   
@@ -51,12 +51,13 @@ TeensyFFTMgt eq;
 ModeButtonMgt modeMgt;
 
 // setup button
-OneButton modeButton(MODEBUTTON_PIN,true);
+//OneButton modeButton(MODEBUTTON_PIN,true);
 
 void setup()
 {
   //FastLED library
-  LEDS.addLeds<WS2811, LED_PIN, GRB>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip);
+  LEDS.addLeds<WS2811, LED1_PIN, GRB>(leds, 0,NUM_LEDS_HALF); //.setCorrection(TypicalLEDStrip);
+  LEDS.addLeds<WS2811, LED2_PIN, GRB>(leds, NUM_LEDS_HALF,NUM_LEDS_HALF); //.setCorrection(TypicalLEDStrip);
   clearLeds(&leds[0], NUM_LEDS);
   //clearLeds(&ledsrow[0], M_WIDTH);
   LEDS.show();  // push black
@@ -69,23 +70,22 @@ void setup()
   RF_Init();
   
   //button stuff
-  modeButton.setClickTicks(300);
-  modeButton.attachClick(modeMgt.ModeButton_Click);
-  modeButton.attachDoubleClick(modeMgt.ModeButton_DoubleClick);
-  modeButton.attachLongPressStart(modeMgt.ModeButton_Hold);
+//  modeButton.setClickTicks(300);
+//  modeButton.attachClick(modeMgt.ModeButton_Click);
+//  modeButton.attachDoubleClick(modeMgt.ModeButton_DoubleClick);
+//  modeButton.attachLongPressStart(modeMgt.ModeButton_Hold);
 
   //mode stuff
   cnf.currFrame = 0;
   cnf.currHue = 0;
-  autoModeChange = 1;
+  autoModeChange = 0; // default 1
   lastAutoModeChangeTime = 0;
-  cnf.currMode = 18;  // first mode to run
+  cnf.currMode = 15;  // first mode to run
   modeMgt.InitCurrMode(&cnf);
   
   #ifdef SerialDebug
   Serial.begin(9600);
   Serial << "Setup done" << endl;
-  Serial << "ram " << freeRam() << endl;
   //cnf.debug = 1;
   #endif
 }
@@ -104,9 +104,9 @@ void loop() {
   cnf.currHue++;
   
   // random modes every 100 frames, fire mode every 20 frames
-  if(((cnf.currMode > 14) && (cnf.currFrame % 100 == 0)) || ((cnf.currMode >= 22) && (cnf.currFrame % 13 == 0))) {
-    random16_add_entropy(analogRead(0));   // re-initialize random numbers
-  }
+  /*if(((cnf.currMode > 14) && (cnf.currFrame % 100 == 0)) || ((cnf.currMode >= 22) && (cnf.currFrame % 13 == 0))) {
+    random16_add_entropy(analogRead(A3));   // re-initialize random numbers
+  }*/
   
   if((soundForEveryone == 1) || (cnf.currMode <= 11/* sound */) || 
      (cnf.currMode == 21 /* kr */) || (cnf.currMode == 24/* fire */)) {
@@ -114,11 +114,11 @@ void loop() {
   }
   
   // check if any buttons have been pressed
-  modeButton.tick();
+//  modeButton.tick();
   
   #ifdef SerialDebug
     if(cnf.currFrame % 200 == 0) {
-      Serial << "m=" << cnf.currMode << " d=" << cnf.currDelay << " r=" << freeRam() << endl;
+      Serial << "m=" << cnf.currMode << " d=" << cnf.currDelay << endl;
     }
   #endif
   
@@ -146,15 +146,16 @@ uint16_t XY( uint8_t x, uint8_t y)
   } else {
     x = x - (M_WIDTH/4);
   }
-  
+  uint16_t ret;
   // wrap around horizontally
   if(x >= M_WIDTH) { x = x % M_WIDTH; }
   // block wrap vertically
   if(y >= M_HEIGHT) { y = M_HEIGHT-1; }
   if(x & 0x01) { // odd columns run backwards
-    return (x * M_HEIGHT) + ((M_HEIGHT - 1) - y);
+    ret = (x * M_HEIGHT) + ((M_HEIGHT - 1) - y);
   } else {
-    return (x * M_HEIGHT) + y;
+    ret = (x * M_HEIGHT) + y;
   }
+  return ret;
 }
 

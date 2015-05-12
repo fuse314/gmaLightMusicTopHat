@@ -65,14 +65,14 @@ class EffectSound : public EffectClass {
           break;
         }
         for(uint8_t i=0; i<M_HEIGHT; i++) {
-          if(_cnf->eqVol[i] > 0) {
+          if(_cnf->eq8Band[i] > 0) {
             if(_effectMode == 4) {
-              theColor = CHSV(0,0,_cnf->eqVol[i]);
+              theColor = CHSV(0,0,_cnf->eq8Band[i]);
             } else
             if(_effectMode == 6 || _effectMode == 7) {
-              theColor = ColorFromPalette(_palette, _cnf->eqVol[i]);
+              theColor = ColorFromPalette(_palette, _cnf->eq8Band[i]);
             }
-            uint8_t soundlvl = map(_cnf->eqVol[i], 1, 255, 1, M_HALFWIDTH);
+            uint8_t soundlvl = map(_cnf->eq8Band[i], 1, 255, 1, M_HALFWIDTH);
             for(uint8_t j=0; j<soundlvl; j++) {
               if (_effectMode==4) {
                 _leds[XY(M_HALFWIDTH-j-1,i)] += theColor;
@@ -98,12 +98,12 @@ class EffectSound : public EffectClass {
       case 9:
       case 10:
         for(uint8_t i=0; i<M_HEIGHT; i++) {
-          if(_cnf->eqVol[i] > 0) {
+          if(_cnf->eq8Band[i] > 0) {
             if(_effectMode == 9) {
-              theColor = CRGB(_cnf->eqVol[i],0,0);  // red, dependent on volume
+              theColor = CRGB(_cnf->eq8Band[i],0,0);  // red, dependent on volume
             } else {
               if(_effectMode == 10) {            //      from green(256) to blue(511)  , dim from 0-255 depending on volume
-                theColor = ColorFromPalette(_palette,_cnf->eqVol[i]).nscale8(_cnf->eqVol[i]);
+                theColor = ColorFromPalette(_palette,_cnf->eq8Band[i]).nscale8(_cnf->eq8Band[i]);
               }
             }
           } else {

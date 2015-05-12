@@ -84,7 +84,7 @@ class EffectRandom : public EffectClass {
             _currColor = CHSV(_rndLines[i].hue,255,quadwave8(_rndLines[i].anim_idx));
           }
           for(uint16_t j=_rndLines[i].start; j<(_rndLines[i].start+_rndLines[i].length); j++) {
-            _leds[j] += _currColor;
+            _leds[XY(j % M_WIDTH,j / M_WIDTH)] += _currColor;
           }
         }
       break;
