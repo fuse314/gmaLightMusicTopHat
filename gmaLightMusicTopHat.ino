@@ -55,6 +55,8 @@ ModeButtonMgt modeMgt;
 
 void setup()
 {
+  delay(3000);  // wait for things to settle down...
+  
   //FastLED library
   LEDS.addLeds<WS2811, LED1_PIN, GRB>(leds, 0,NUM_LEDS_HALF); //.setCorrection(TypicalLEDStrip);
   LEDS.addLeds<WS2811, LED2_PIN, GRB>(leds, NUM_LEDS_HALF,NUM_LEDS_HALF); //.setCorrection(TypicalLEDStrip);
@@ -78,9 +80,9 @@ void setup()
   //mode stuff
   cnf.currFrame = 0;
   cnf.currHue = 0;
-  autoModeChange = 0; // default 1
+  autoModeChange = 1;
   lastAutoModeChangeTime = 0;
-  cnf.currMode = 15;  // first mode to run
+  cnf.currMode = 20;  // first mode to run
   modeMgt.InitCurrMode(&cnf);
   
   #ifdef SerialDebug

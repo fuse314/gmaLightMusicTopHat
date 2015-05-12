@@ -11,14 +11,13 @@
 #define DELAY_FAST 4
 #define DELAY_SLOW 18
 #define DELAY_FIRE 10
-#define DELAY_KR 10
+#define DELAY_KR 3
 
 #define NORMBRIGHT 32  // maximum brightness of leds (0-255)
 
 #define FASTLED_ALLOW_INTERRUPTS 0
 
 #define DIMSPEED 16     // the higher the faster
-//#define DIMSPEED_KR 35
 
 // this value overwrites the bright white color when loud noise is present with a rainbow color, dimmed according to loudness
 // as soon as the average loudness level (0-255) of eq7Vol is greater than (AUDIO_RAINBOW_LVL), the sound color is replaced with the rainbow color.
@@ -39,8 +38,5 @@ struct Config_t {
 };
 
 extern uint8_t soundForEveryone;
-
-// comment out to get RF24 module working
-//#define NOWIRELESS
 
 #endif
