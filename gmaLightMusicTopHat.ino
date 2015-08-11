@@ -12,12 +12,23 @@
   https://github.com/fuse314/gmaLightMusicHat/
 */
 
-#include "gmaLightMusicTopHat.h"
+#define USE_OCTOWS2811
+#include<OctoWS2811.h>
+#define OCTO_LEDS_PER_STRIP 256
+#define OCTO_STRIPS 8
+#define OCTO_NUM_LEDS (OCTO_LEDS_PER_STRIP * OCTO_STRIPS)
+// Pin layouts on the teensy 3:
+// OctoWS2811: 2,14,7,8,6,20,21,5
+// I am only using  7,8
+#define OCTO_OFFSET (OCTO_LEDS_PER_STRIP * 2)
+
+#include <FastLED.h>
 #include "zGlobals.h"
+Config_t cnf;
+
 #include "LEDColorMgt.h"
 #include "TeensyFFTMgt.h"
-#include "ModeButtonMgt.h"
-#include "zEffectClass.h"
+#include <ParticleSys.h>
 #include <Audio.h>
 #include <Wire.h>
 #include <SPI.h>
@@ -28,7 +39,59 @@
 
 
 // LED stuff
-#include <FastLED.h>
+CRGB leds[OCTO_NUM_LEDS];
+CRGBPalette16 currPalette;
+CRGB currColor;
+
+//effects
+#include "Effect_Fire.h"
+#include "Effect_KR.h"
+#include "Effect_Particle.h"
+#include "Effect_Rainbow.h"
+#include "Effect_Random.h"
+#include "Effect_Sine.h"
+#include "Effect_Sound.h"
+
+typedef void (*functionList)(); // definition for list of effect function pointers
+#define numEffects (sizeof(effectList) / sizeof(effectList[0]))
+functionList effectList[] = {
+  effect_fire1,
+  effect_fire2,
+  effect_fire3,
+  effect_KR1,
+  effect_KR2,
+  effect_KR3,
+  effect_particle1,
+  effect_particle2,
+  effect_particle3,
+  effect_rainbow1,
+  effect_rainbow2,
+  effect_rainbow3,
+  effect_rainbow4,
+  effect_rainbow5,
+  effect_random1,
+  effect_random2,
+  effect_random3,
+  effect_random4,
+  effect_sine1,
+  effect_sine2,
+  effect_sine3,
+  effect_sound1,
+  effect_sound2,
+  effect_sound3,
+  effect_sound4,
+  effect_sound5,
+  effect_sound6,
+  effect_sound7,
+  effect_sound8,
+  effect_sound9,
+  effect_sound10
+};
+
+
+#include "ModeButtonMgt.h"
+
+#define SerialDebug
 
 #ifdef SerialDebug
 #include <Streaming.h>
@@ -36,19 +99,6 @@
 
 // button stuff
 #include <OneButton.h>
-
-CRGB leds[NUM_LEDS];
-
-EffectClass *currEffect;
-
-uint8_t autoModeChange;
-uint32_t lastAutoModeChangeTime;
-uint8_t soundForEveryone;
-
-Config_t cnf;
-
-TeensyFFTMgt eq;
-ModeButtonMgt modeMgt;
 
 // setup button
 //OneButton modeButton(MODEBUTTON_PIN,true);
@@ -58,14 +108,22 @@ void setup()
   delay(3000);  // wait for things to settle down...
   
   //FastLED library
-  LEDS.addLeds<WS2811, LED1_PIN, GRB>(leds, 0,NUM_LEDS_HALF); //.setCorrection(TypicalLEDStrip);
-  LEDS.addLeds<WS2811, LED2_PIN, GRB>(leds, NUM_LEDS_HALF,NUM_LEDS_HALF); //.setCorrection(TypicalLEDStrip);
-  clearLeds(&leds[0], NUM_LEDS);
-  //clearLeds(&ledsrow[0], M_WIDTH);
+  /* OctoWS2811
+  if(NUM_LEDS > LEDSPERSTRIP) {
+    FastLED.addLeds<WS2811, LED1_PIN, GRB>(leds, 0,LEDSPERSTRIP).setCorrection(TypicalLEDStrip).setDither(0);
+    uint16_t theRest = NUM_LEDS-LEDSPERSTRIP;
+    if(theRest > LEDSPERSTRIP) { theRest = LEDSPERSTRIP; }
+    FastLED.addLeds<WS2811, LED2_PIN, GRB>(leds, LEDSPERSTRIP,theRest).setCorrection(TypicalLEDStrip).setDither(0);
+  } else {
+    FastLED.addLeds<WS2811, LED1_PIN, GRB>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip).setDither(0);
+  }
+  */
+  FastLED.addLeds<OCTOWS2811>(leds, OCTO_LEDS_PER_STRIP);
+  clearLeds(&leds[OCTO_OFFSET], NUM_LEDS);
   LEDS.show();  // push black
   
-  //initialize MSGEQ7 chip
-  eq.InitFFT();
+  //initialize FFT functions
+  InitFFT();
   
   soundForEveryone = 0;
   //RF24 stuff
@@ -82,8 +140,8 @@ void setup()
   cnf.currHue = 0;
   autoModeChange = 1;
   lastAutoModeChangeTime = 0;
-  cnf.currMode = 20;  // first mode to run
-  modeMgt.InitCurrMode(&cnf);
+  cnf.currMode = 0;  // first mode to run
+  cnf.isModeInit = false;
   
   #ifdef SerialDebug
   Serial.begin(9600);
@@ -95,7 +153,7 @@ void setup()
 void loop() {
   
   // call effect loop
-  currEffect->step(&cnf, leds);
+  effectList[cnf.currMode](); // run selected effect
   if(LEDS.getBrightness() != cnf.currBright) {  // update global brightness
     LEDS.setBrightness(cnf.currBright);
   }
@@ -110,10 +168,10 @@ void loop() {
     random16_add_entropy(analogRead(A3));   // re-initialize random numbers
   }*/
   
-  if((soundForEveryone == 1) || (cnf.currMode <= 11/* sound */) || 
-     (cnf.currMode == 21 /* kr */) || (cnf.currMode == 24/* fire */)) {
-    eq.GetFFT(&cnf);
-  }
+  //if((soundForEveryone == 1) || (cnf.currMode <= 11/* sound */) || 
+  //   (cnf.currMode == 21 /* kr */) || (cnf.currMode == 24/* fire */)) {
+    GetFFT(&cnf);
+  //}
   
   // check if any buttons have been pressed
 //  modeButton.tick();
@@ -128,14 +186,15 @@ void loop() {
   RF_Read();
   
   if(soundForEveryone == 1) {
-    RF_SoundForEveryone(&cnf);
+    RF_SoundForEveryone();
   }
     
   // only check random mode change every currDelay*150 milliseconds, default 1050 ms (one second)
   if(autoModeChange == 1 && cnf.currFrame % 150 == 0) {
-    modeMgt.CheckAutoModeChange();
+    CheckAutoModeChange();
   }
-  FastLED.delay(cnf.currDelay);
+  //FastLED.delay(cnf.currDelay);
+  delay(cnf.currDelay);
 }
 
 
@@ -143,10 +202,10 @@ uint16_t XY( uint8_t x, uint8_t y)
 {
   // offset x by width/4 pixels,
   //to have the center of the animation in the center of the first of two panels
-  if(x < (M_WIDTH/4)) {
-    x = x+(M_WIDTH/4*3);
+  if(x < M_XOFFSET) {
+    x = x+(M_WIDTH-M_XOFFSET);
   } else {
-    x = x - (M_WIDTH/4);
+    x = x - M_XOFFSET;
   }
   uint16_t ret;
   // wrap around horizontally
@@ -158,6 +217,6 @@ uint16_t XY( uint8_t x, uint8_t y)
   } else {
     ret = (x * M_HEIGHT) + y;
   }
-  return ret;
+  return ret + OCTO_OFFSET;
 }
 
