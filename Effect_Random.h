@@ -51,7 +51,6 @@ void effect_random2() {
     cnf.currDelay = DELAY_SLOW;
     cnf.currBright = NORMBRIGHT;
     random_dimspeed = 16;
-    currColor = Wheel(random16(768));  // start with random color
     cnf.isModeInit = true;
   }
   dimLeds(random_dimspeed,leds,1);

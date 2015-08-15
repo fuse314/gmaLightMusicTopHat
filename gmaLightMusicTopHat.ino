@@ -33,6 +33,7 @@ Config_t cnf;
 #include <Wire.h>
 #include <SPI.h>
 #include <SD.h>
+#include <SerialFlash.h>
 #include <RF24.h>
 #include <gmaRGBLight.h>
 #include "nRFMgt.h"
@@ -98,7 +99,7 @@ functionList effectList[] = {
 #endif
 
 // button stuff
-#include <OneButton.h>
+//#include <OneButton.h>
 
 // setup button
 //OneButton modeButton(MODEBUTTON_PIN,true);

@@ -40,4 +40,4 @@ struct Config_t {
 
 //button stuff
 #define MODEBUTTON_PIN 5
-#define AUTOMODE_CHANGE 20000  // change every 60 seconds
+#define AUTOMODE_CHANGE 45000  // change every 60 seconds
