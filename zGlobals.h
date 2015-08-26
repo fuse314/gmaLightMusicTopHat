@@ -13,10 +13,11 @@
 #define DELAY_NORMAL 7
 #define DELAY_FAST 4
 #define DELAY_SLOW 15
-#define DELAY_FIRE 10
-#define DELAY_KR 3
+#define DELAY_FIRE 20
+#define DELAY_KR 13
 
 #define NORMBRIGHT 32  // maximum brightness of leds (0-255)
+#define LOWBRIGHT 23   // lower brightness for effects that use most of the LEDs
 
 #define DIMSPEED 16     // the higher the faster
 
@@ -40,4 +41,4 @@ struct Config_t {
 
 //button stuff
 #define MODEBUTTON_PIN 5
-#define AUTOMODE_CHANGE 45000  // change every 60 seconds
+#define AUTOMODE_CHANGE 45000  // change every 45 seconds

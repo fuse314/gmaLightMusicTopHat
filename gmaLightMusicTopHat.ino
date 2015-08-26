@@ -56,37 +56,33 @@ CRGB currColor;
 typedef void (*functionList)(); // definition for list of effect function pointers
 #define numEffects (sizeof(effectList) / sizeof(effectList[0]))
 functionList effectList[] = {
-  effect_fire1,
-  effect_fire2,
-  effect_fire3,
-  effect_KR1,
-  effect_KR2,
-  effect_KR3,
-  effect_particle1,
-  effect_particle2,
-  effect_particle3,
-  effect_rainbow1,
-  effect_rainbow2,
-  effect_rainbow3,
-  effect_rainbow4,
-  effect_rainbow5,
-  effect_random1,
-  effect_random2,
-  effect_random3,
-  effect_random4,
-  effect_sine1,
-  effect_sine2,
-  effect_sine3,
-  effect_sound1,
-  effect_sound2,
-  effect_sound3,
-  effect_sound4,
-  effect_sound5,
-  effect_sound6,
-  effect_sound7,
-  effect_sound8,
-  effect_sound9,
-  effect_sound10
+  eff_fire1,        // 0
+  eff_fire2,        // 1
+  eff_soundFire,    // 2
+  eff_redKR,        // 3
+  eff_rainbowKR,    // 4
+  eff_soundKR,      // 5
+  eff_starfield,    // 6
+  eff_rainingUp,    // 7
+  eff_rainingDown,  // 8
+  eff_hRainbow,     // 9
+  eff_weirdRainbow, //10
+  eff_horizRain,    //11
+  eff_slantedBars,  //12
+  eff_colorSparks,  //13
+  eff_whiteSparks,  //14
+  eff_slowRNDLines, //15
+  eff_quickRNDLines,//16
+  eff_redwave,      //17
+  eff_redgreenwave, //18
+  eff_rainbowwave,  //19
+  eff_eqColorSnd,   //20
+  eff_rainbowSnd,   //22
+  eff_blueRedSnd,   //23
+  eff_greenBlueSnd, //24
+  eff_policeSnd,    //25
+  eff_redBrightSnd, //26
+  eff_greenBlueBrightSnd //27
 };
 
 
@@ -109,17 +105,7 @@ void setup()
   delay(3000);  // wait for things to settle down...
   
   //FastLED library
-  /* OctoWS2811
-  if(NUM_LEDS > LEDSPERSTRIP) {
-    FastLED.addLeds<WS2811, LED1_PIN, GRB>(leds, 0,LEDSPERSTRIP).setCorrection(TypicalLEDStrip).setDither(0);
-    uint16_t theRest = NUM_LEDS-LEDSPERSTRIP;
-    if(theRest > LEDSPERSTRIP) { theRest = LEDSPERSTRIP; }
-    FastLED.addLeds<WS2811, LED2_PIN, GRB>(leds, LEDSPERSTRIP,theRest).setCorrection(TypicalLEDStrip).setDither(0);
-  } else {
-    FastLED.addLeds<WS2811, LED1_PIN, GRB>(leds, NUM_LEDS).setCorrection(TypicalLEDStrip).setDither(0);
-  }
-  */
-  FastLED.addLeds<OCTOWS2811>(leds, OCTO_LEDS_PER_STRIP);
+  FastLED.addLeds<OCTOWS2811>(leds, OCTO_LEDS_PER_STRIP).setCorrection(TypicalLEDStrip);
   clearLeds(&leds[OCTO_OFFSET], NUM_LEDS);
   LEDS.show();  // push black
   
@@ -141,11 +127,11 @@ void setup()
   cnf.currHue = 0;
   autoModeChange = 1;
   lastAutoModeChangeTime = 0;
-  cnf.currMode = 0;  // first mode to run
+  cnf.currMode = 14;  // first mode to run
   cnf.isModeInit = false;
   
   #ifdef SerialDebug
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial << "Setup done" << endl;
   //cnf.debug = 1;
   #endif
@@ -164,21 +150,14 @@ void loop() {
   cnf.currFrame++;
   cnf.currHue++;
   
-  // random modes every 100 frames, fire mode every 20 frames
-  /*if(((cnf.currMode > 14) && (cnf.currFrame % 100 == 0)) || ((cnf.currMode >= 22) && (cnf.currFrame % 13 == 0))) {
-    random16_add_entropy(analogRead(A3));   // re-initialize random numbers
-  }*/
-  
-  //if((soundForEveryone == 1) || (cnf.currMode <= 11/* sound */) || 
-  //   (cnf.currMode == 21 /* kr */) || (cnf.currMode == 24/* fire */)) {
-    GetFFT(&cnf);
-  //}
+  EVERY_N_SECONDS( 1 ) { random16_add_entropy(cnf.eq8Band[3]); }  // re-initialize random numbers
+  GetFFT(&cnf);
   
   // check if any buttons have been pressed
 //  modeButton.tick();
   
   #ifdef SerialDebug
-    if(cnf.currFrame % 200 == 0) {
+    EVERY_N_MILLISECONDS( 800 ) {
       Serial << "m=" << cnf.currMode << " d=" << cnf.currDelay << endl;
     }
   #endif
@@ -189,11 +168,14 @@ void loop() {
   if(soundForEveryone == 1) {
     RF_SoundForEveryone();
   }
-    
+  
   // only check random mode change every currDelay*150 milliseconds, default 1050 ms (one second)
-  if(autoModeChange == 1 && cnf.currFrame % 150 == 0) {
-    CheckAutoModeChange();
+  EVERY_N_SECONDS( 2 ) {
+    if(autoModeChange == 1) {
+      CheckAutoModeChange();
+    }
   }
+  
   //FastLED.delay(cnf.currDelay);
   delay(cnf.currDelay);
 }

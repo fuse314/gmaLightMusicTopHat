@@ -42,7 +42,7 @@ void effectFireCommon() {
   }
 }
 
-void effect_fire1() {
+void eff_fire1() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_FIRE;
     cnf.currBright = NORMBRIGHT;
@@ -54,7 +54,7 @@ void effect_fire1() {
   effectFireCommon();
 }
 
-void effect_fire2() {
+void eff_fire2() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_FIRE;
     cnf.currBright = NORMBRIGHT;
@@ -68,7 +68,7 @@ void effect_fire2() {
   effectFireCommon();
 }
 
-void effect_fire3() {
+void eff_soundFire() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_FIRE;
     cnf.currBright = NORMBRIGHT;

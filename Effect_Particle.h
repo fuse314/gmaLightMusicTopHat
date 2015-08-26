@@ -14,7 +14,7 @@ Emitter_Side particle_emitterSide('b',1,8);
 ParticleSys pSys(&g, numParticles, particles, &particle_emitterFountn);
 FastLEDRenderer pRenderer(&g, 0, 0, M_WIDTH, M_HEIGHT);
 
-void effect_particle1() {
+void eff_starfield() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_SLOW;
     cnf.currBright = NORMBRIGHT;
@@ -26,7 +26,7 @@ void effect_particle1() {
   pRenderer.render(&g, particles, numParticles, leds);
 }
 
-void effect_particle2() {
+void eff_rainingUp() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_SLOW;
     cnf.currBright = NORMBRIGHT;
@@ -40,7 +40,7 @@ void effect_particle2() {
   pRenderer.render(&g, particles, numParticles, leds);
 }
 
-void effect_particle3() {
+void eff_rainingDown() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_SLOW;
     cnf.currBright = NORMBRIGHT;

@@ -32,7 +32,7 @@ void rnd_stepLine(rndline_t *_line) {  // advance animation one step
   }
 }
 
-void effect_random1() {
+void eff_colorSparks() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_SLOW;
     cnf.currBright = NORMBRIGHT;
@@ -40,26 +40,26 @@ void effect_random1() {
     currColor = Wheel(random16(768));  // start with random color
     cnf.isModeInit = true;
   }
-  dimLeds(random_dimspeed,leds,1);
-  if(random8() < 96) {  // the bigger the number (up to 255) the better the chances of placing a pixel
-    leds[random16(NUM_LEDS)] = Wheel(random16(768));
+  dimLeds(random_dimspeed, &leds[OCTO_OFFSET] ,1);
+  if(random8() < 140) {  // the bigger the number (up to 255) the better the chances of placing a pixel
+    leds[OCTO_OFFSET+random16(NUM_LEDS)] = Wheel(random16(768));
   }
 }
 
-void effect_random2() {
+void eff_whiteSparks() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_SLOW;
     cnf.currBright = NORMBRIGHT;
     random_dimspeed = 16;
     cnf.isModeInit = true;
   }
-  dimLeds(random_dimspeed,leds,1);
-  if(random8() < 160) {  // see comment above
-    leds[random16(NUM_LEDS)] = CRGB::White;
+  dimLeds(random_dimspeed, &leds[OCTO_OFFSET] ,1);
+  if(random8() < 190) {  // see comment above
+    leds[OCTO_OFFSET+random16(NUM_LEDS)] = CRGB::White;
   }
 }
 
-void effect_random3() {
+void eff_slowRNDLines() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_SLOW;
     cnf.currBright = NORMBRIGHT;
@@ -70,7 +70,7 @@ void effect_random3() {
     }
     cnf.isModeInit = true;
   }
-  clearLeds(leds, NUM_LEDS);
+  clearLeds(&leds[OCTO_OFFSET], NUM_LEDS);
   for(uint8_t i=0; i<RANDOM_NUM_LINES; i++) {
     rnd_stepLine(&random_rndLines[i]);
     currColor = CHSV(random_rndLines[i].hue,255,255-random_rndLines[i].anim_idx);
@@ -80,7 +80,7 @@ void effect_random3() {
   }
 }
 
-void effect_random4() {
+void eff_quickRNDLines() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_SLOW;
     cnf.currBright = NORMBRIGHT;
@@ -91,7 +91,7 @@ void effect_random4() {
     }
     cnf.isModeInit = true;
   }
-  clearLeds(leds, NUM_LEDS);
+  clearLeds(&leds[OCTO_OFFSET], NUM_LEDS);
   for(uint8_t i=0; i<RANDOM_NUM_LINES; i++) {
     rnd_stepLine(&random_rndLines[i]);
     currColor = CHSV(random_rndLines[i].hue,255,quadwave8(random_rndLines[i].anim_idx));

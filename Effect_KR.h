@@ -5,10 +5,10 @@
 #define KR_WIDTH 12   // width of KR-band
 #define KR_BORDER (KR_WIDTH/4)
 #define KR_DIMSPEED 23
-#define KR_BPM 90
+#define KR_BPM 20
 
 void effectKRCommon() {
-  dimLeds(KR_DIMSPEED , leds, 1);
+  dimLeds(KR_DIMSPEED , &leds[OCTO_OFFSET], 1);
   
   uint8_t startPos = beatsin8(KR_BPM,0,M_WIDTH-KR_WIDTH);
   uint8_t top, bottom;
@@ -36,7 +36,7 @@ void effectKRCommon() {
   }
 }
 
-void effect_KR1() {
+void eff_redKR() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_KR;
     cnf.currBright = NORMBRIGHT;
@@ -46,7 +46,7 @@ void effect_KR1() {
   effectKRCommon();
 }
 
-void effect_KR2() {
+void eff_rainbowKR() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_KR;
     cnf.currBright = NORMBRIGHT;
@@ -56,7 +56,7 @@ void effect_KR2() {
   effectKRCommon();
 }
 
-void effect_KR3() {
+void eff_soundKR() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_KR;
     cnf.currBright = NORMBRIGHT;

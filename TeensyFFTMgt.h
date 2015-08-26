@@ -3,7 +3,7 @@
 #include <SPI.h>
 #include <SD.h>
 
-#define AUDIO_IN_PIN A2
+#define AUDIO_IN_PIN A3
 #define AUDIO_MAX_RESET_COUNTER 500
 
 AudioInputAnalog   audioIn(AUDIO_IN_PIN);

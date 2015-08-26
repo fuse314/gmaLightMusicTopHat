@@ -31,7 +31,7 @@ void sine_step_common() {
   }
 }
 
-void effect_sine1() {
+void eff_redwave() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_NORMAL;
     cnf.currBright = NORMBRIGHT;
@@ -47,7 +47,7 @@ void effect_sine1() {
   sine_step_common();
 }
 
-void effect_sine2() {
+void eff_redgreenwave() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_NORMAL;
     cnf.currBright = NORMBRIGHT;
@@ -63,7 +63,7 @@ void effect_sine2() {
   sine_step_common();
 }
 
-void effect_sine3() {
+void eff_rainbowwave() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_NORMAL;
     cnf.currBright = NORMBRIGHT;

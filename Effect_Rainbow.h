@@ -1,4 +1,4 @@
-//mode 1: rainbow all three rows the same
+//mode 1: rainbow all rows the same
 //mode 2: solid color rainbow all leds the same
 //mode 3: rainbow through all leds, results in right-left-right run due to led configuration
 //mode 4: horizontal rain
@@ -6,7 +6,7 @@
 
 uint8_t rainbow_pos;
 
-void effect_rainbow1() {
+void eff_hRainbow() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_FAST;
     cnf.currBright = NORMBRIGHT;
@@ -18,7 +18,7 @@ void effect_rainbow1() {
   copyRowToAll(leds);
 }
 
-void effect_rainbow2() {
+void eff_solidRainbow() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_FAST;
     cnf.currBright = NORMBRIGHT;
@@ -30,16 +30,16 @@ void effect_rainbow2() {
   copyRowToAll(leds);
 }
 
-void effect_rainbow3() {
+void eff_weirdRainbow() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_FAST;
-    cnf.currBright = NORMBRIGHT;
+    cnf.currBright = LOWBRIGHT;
     cnf.isModeInit = true;
   }
-  fill_rainbow( &(leds[0]), NUM_LEDS, cnf.currFrame % 256);
+  fill_rainbow( &(leds[OCTO_OFFSET]), NUM_LEDS, cnf.currFrame % 256);
 }
 
-void effect_rainbow4() {
+void eff_horizRain() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_KR;
     cnf.currBright = NORMBRIGHT;
@@ -52,7 +52,7 @@ void effect_rainbow4() {
   leds[XY(M_WIDTH-1,random8(M_HEIGHT))] = Wheel(cnf.currFrame);
 }
 
-void effect_rainbow5() {
+void eff_slantedBars() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_FAST;
     cnf.currBright = NORMBRIGHT;
