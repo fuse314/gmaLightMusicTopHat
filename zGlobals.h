@@ -2,7 +2,11 @@
 
 #define M_HEIGHT 8
 #define M_WIDTH 61
+#if (M_WIDTH & 0x01)
+#define M_HALFWIDTH ((M_WIDTH+1)/2)
+#else
 #define M_HALFWIDTH (M_WIDTH/2)
+#endif
 #define NUM_LEDS (M_HEIGHT * M_WIDTH)
 #define M_XOFFSET 15
 

@@ -80,7 +80,7 @@ functionList effectList[] = {
   eff_rainbowSnd,   //22
   eff_blueRedSnd,   //23
   eff_greenBlueSnd, //24
-  eff_policeSnd,    //25
+ // eff_policeSnd,    //25
   eff_redBrightSnd, //26
   eff_greenBlueBrightSnd //27
 };
