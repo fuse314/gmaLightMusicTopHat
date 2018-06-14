@@ -116,7 +116,7 @@ void eff_redBrightSnd() {
       currColor = CRGB(0,0,0);
     }
     for(uint8_t j=0; j<M_WIDTH; j++) {
-      leds[XY(i,j)] = currColor;
+      leds[XY(j,i)] = currColor;
     }
   }
 }
@@ -136,7 +136,7 @@ void eff_greenBlueBrightSnd() {
       currColor = CRGB(0,0,0);
     }
     for(uint8_t j=0; j<M_WIDTH; j++) {
-      leds[XY(i,j)] = currColor;
+      leds[XY(j,i)] = currColor;
     }
   }
 }

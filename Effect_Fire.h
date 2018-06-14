@@ -19,7 +19,7 @@ void effectFireCommon() {
       fire_heat[i][row] = qsub8( fire_heat[i][row],  random8(0, ((fire_cooling * 10) / M_HALFWIDTH) + 2));
     }
     // Step 2.  Heat from each cell drifts 'up' and diffuses a little
-    for(uint8_t k= M_HALFWIDTH - 1; k > 0; k--) {
+    for(uint8_t k= M_HALFWIDTH - 1; k > 1; k--) {
       fire_heat[k][row] = (fire_heat[k-1][row] + fire_heat[k-2][row] + fire_heat[k-2][row] ) / 3;
     }
     // step 2.5 Heat from each cell drifts 'left' and diffuses a little

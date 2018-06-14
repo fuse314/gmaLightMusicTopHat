@@ -2,6 +2,7 @@
 
 #define M_HEIGHT 8
 #define M_WIDTH 61
+#define MAXDIM ((M_WIDTH>M_HEIGHT) ? M_WIDTH : M_HEIGHT)
 #if (M_WIDTH & 0x01)
 #define M_HALFWIDTH ((M_WIDTH+1)/2)
 #else

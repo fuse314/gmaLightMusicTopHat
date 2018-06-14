@@ -52,37 +52,41 @@ CRGB currColor;
 #include "Effect_Random.h"
 #include "Effect_Sine.h"
 #include "Effect_Sound.h"
+#include "Effect_Noise.h"
 
 typedef void (*functionList)(); // definition for list of effect function pointers
 #define numEffects (sizeof(effectList) / sizeof(effectList[0]))
 functionList effectList[] = {
-  eff_fire1,        // 0
-  eff_fire2,        // 1
-  eff_soundFire,    // 2
-  eff_redKR,        // 3
-  eff_rainbowKR,    // 4
-  eff_soundKR,      // 5
-  eff_starfield,    // 6
-  eff_rainingUp,    // 7
-  eff_rainingDown,  // 8
-  eff_hRainbow,     // 9
-  eff_weirdRainbow, //10
-  eff_horizRain,    //11
-  eff_slantedBars,  //12
-  eff_colorSparks,  //13
-  eff_whiteSparks,  //14
-  eff_slowRNDLines, //15
-  eff_quickRNDLines,//16
-  eff_redwave,      //17
-  eff_redgreenwave, //18
-  eff_rainbowwave,  //19
-  eff_eqColorSnd,   //20
-  eff_rainbowSnd,   //22
-  eff_blueRedSnd,   //23
-  eff_greenBlueSnd, //24
- // eff_policeSnd,    //25
-  eff_redBrightSnd, //26
-  eff_greenBlueBrightSnd //27
+  eff_noiseParty,
+  eff_noiseOcean,
+  eff_noiseGreen,
+  eff_fire1,
+  eff_fire2,
+  eff_soundFire,
+  //eff_redKR,
+  eff_rainbowKR,
+  eff_soundKR,
+  eff_starfield,
+  eff_rainingUp,
+  eff_rainingDown,
+  eff_hRainbow,
+  eff_weirdRainbow,
+  eff_horizRain,
+  eff_slantedBars,
+  eff_colorSparks,
+  eff_whiteSparks,
+  //eff_slowRNDLines,
+  //eff_quickRNDLines,
+  eff_redwave,
+  eff_redgreenwave,
+  eff_rainbowwave,
+  eff_eqColorSnd,
+  eff_rainbowSnd,
+  eff_blueRedSnd,
+  eff_greenBlueSnd,
+ // eff_policeSnd,
+  eff_redBrightSnd,
+  eff_greenBlueBrightSnd
 };
 
 
@@ -127,7 +131,8 @@ void setup()
   cnf.currHue = 0;
   autoModeChange = 1;
   lastAutoModeChangeTime = 0;
-  cnf.currMode = 14;  // first mode to run
+  //cnf.currMode = 10;  // first mode to run
+  cnf.currMode = 2;
   cnf.isModeInit = false;
   
   #ifdef SerialDebug
@@ -157,7 +162,7 @@ void loop() {
 //  modeButton.tick();
   
   #ifdef SerialDebug
-    EVERY_N_MILLISECONDS( 800 ) {
+    EVERY_N_MILLISECONDS( 2400 ) {
       Serial << "m=" << cnf.currMode << " d=" << cnf.currDelay << endl;
     }
   #endif
