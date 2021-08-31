@@ -21,7 +21,7 @@ to get all variables:
 50 get speed, mode, brightness
 
 */
-
+/*
 #include <gmaRGBLight.h>
 #include <RF24.h>
 
@@ -72,7 +72,7 @@ void RF_RgbLightCommand(rf_hat_payload_t *_command) {
     
     case 2:
     break;
-    
+*/    
   /*
     case 2: // speed down
       ChangeDelay(0);
@@ -109,7 +109,7 @@ void RF_RgbLightCommand(rf_hat_payload_t *_command) {
       _command->value = s.currBrightness;
     break;
     */
-  }
+/*  }
 }
 
 void RF_Read() {
@@ -122,5 +122,5 @@ void RF_Read() {
     }
   }
 }
-
+*/
 

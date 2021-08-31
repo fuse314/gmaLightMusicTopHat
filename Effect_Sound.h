@@ -10,6 +10,7 @@ void eff_eqColorSnd() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_NORMAL;
     cnf.currBright = NORMBRIGHT;
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   clearLeds(&leds[OCTO_OFFSET], NUM_LEDS);
@@ -29,6 +30,7 @@ void eff_rainbowSnd() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_NORMAL;
     cnf.currBright = NORMBRIGHT;
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   clearLeds(&leds[OCTO_OFFSET], NUM_LEDS);
@@ -49,6 +51,7 @@ void eff_blueRedSnd() {
     cnf.currDelay = DELAY_NORMAL;
     cnf.currBright = NORMBRIGHT;
     currPalette = CRGBPalette16(CRGB::Blue, CRGB::Red);
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   clearLeds(&leds[OCTO_OFFSET], NUM_LEDS);
@@ -69,9 +72,10 @@ void eff_greenBlueSnd() {
     cnf.currDelay = DELAY_NORMAL;
     cnf.currBright = NORMBRIGHT;
     currPalette = CRGBPalette16(CRGB::Green, CRGB::Blue);
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
-  clearLeds(leds, NUM_LEDS);
+  clearLeds(&leds[OCTO_OFFSET], NUM_LEDS);
   for(uint8_t i=0; i<M_HEIGHT; i++) {
     if(cnf.eq8Band[i] > 0) {
       currColor = ColorFromPalette(currPalette, cnf.eq8Band[i]);
@@ -88,6 +92,7 @@ void eff_policeSnd() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_NORMAL;
     cnf.currBright = LOWBRIGHT;
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   setColor(CRGB(0,0,80),&leds[OCTO_OFFSET],NUM_LEDS); // blue base color
@@ -107,6 +112,7 @@ void eff_redBrightSnd() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_NORMAL;
     cnf.currBright = LOWBRIGHT;
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   for(uint8_t i=0; i<M_HEIGHT; i++) {
@@ -126,6 +132,7 @@ void eff_greenBlueBrightSnd() {
     cnf.currDelay = DELAY_NORMAL;
     cnf.currBright = NORMBRIGHT;
     currPalette = CRGBPalette16(CRGB::Blue, CRGB::Green);
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   for(uint8_t i=0; i<M_HEIGHT; i++) {

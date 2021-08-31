@@ -41,6 +41,7 @@ void eff_redKR() {
     cnf.currDelay = DELAY_KR;
     cnf.currBright = NORMBRIGHT;
     currColor = CRGB(192,6,0); // red
+    cnf.canShowText = 0;
     cnf.isModeInit = true;
   }
   effectKRCommon();
@@ -50,6 +51,7 @@ void eff_rainbowKR() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_KR;
     cnf.currBright = NORMBRIGHT;
+    cnf.canShowText = 0;
     cnf.isModeInit = true;
   }
   currColor = CHSV(cnf.currHue,255,255);
@@ -60,6 +62,7 @@ void eff_soundKR() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_KR;
     cnf.currBright = NORMBRIGHT;
+    cnf.canShowText = 0;
     cnf.isModeInit = true;
   }
   currColor = Wheel(520 + cnf.eqVol[1]);

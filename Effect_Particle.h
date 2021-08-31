@@ -18,7 +18,8 @@ void eff_starfield() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_SLOW;
     cnf.currBright = NORMBRIGHT;
-	pSys.emitter = &particle_emitterFountn;
+    pSys.emitter = &particle_emitterFountn;
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   pSys.update();
@@ -31,7 +32,8 @@ void eff_rainingUp() {
     cnf.currDelay = DELAY_SLOW;
     cnf.currBright = NORMBRIGHT;
     particle_emitterSide.side = 'b';
-	pSys.emitter = &particle_emitterSide;
+    pSys.emitter = &particle_emitterSide;
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   particle_emitterSide.baseHue = cnf.currHue;
@@ -45,7 +47,8 @@ void eff_rainingDown() {
     cnf.currDelay = DELAY_SLOW;
     cnf.currBright = NORMBRIGHT;
     particle_emitterSide.side = 't';
-	pSys.emitter = &particle_emitterSide;
+    pSys.emitter = &particle_emitterSide;
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   particle_emitterSide.baseHue = cnf.currHue;

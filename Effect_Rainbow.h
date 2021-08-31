@@ -10,6 +10,7 @@ void eff_hRainbow() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_FAST;
     cnf.currBright = NORMBRIGHT;
+    cnf.canShowText = 0;
     cnf.isModeInit = true;
   }
   for(uint8_t i=0;i<M_WIDTH;i++) {
@@ -22,6 +23,7 @@ void eff_solidRainbow() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_FAST;
     cnf.currBright = NORMBRIGHT;
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   for(uint8_t i=0;i<M_WIDTH;i++) {
@@ -34,6 +36,7 @@ void eff_weirdRainbow() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_FAST;
     cnf.currBright = LOWBRIGHT;
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   fill_rainbow( &(leds[OCTO_OFFSET]), NUM_LEDS, cnf.currFrame % 256);
@@ -43,6 +46,7 @@ void eff_horizRain() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_KR;
     cnf.currBright = NORMBRIGHT;
+    cnf.canShowText = 0;
     cnf.isModeInit = true;
   }
   shiftLeds(1, leds);
@@ -56,6 +60,7 @@ void eff_slantedBars() {
   if(!cnf.isModeInit) {
     cnf.currDelay = DELAY_FAST;
     cnf.currBright = NORMBRIGHT;
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   for(uint8_t i=0; i<M_WIDTH; i++) {

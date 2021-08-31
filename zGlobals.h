@@ -40,6 +40,7 @@ struct Config_t {
   uint8_t  currMode;
   uint8_t  currBright;
   uint8_t  isModeInit;
+  uint8_t  canShowText;
   uint8_t  eq8Band[8]; // 0=low, 8=high
   uint8_t  eqVol[3];  // low(<=400), mid(1k-2.5k), high(>=6.25k)
 };

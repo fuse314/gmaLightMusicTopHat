@@ -1,9 +1,9 @@
 /*
-  Three LED Strips mounted on hat for music festivals
+  LED matrix mounted on a top hat for music festivals
   using Teensy FFT library and microphone to react to music
-  (c) 2012-2015 by Gottfried Mayer www.gma.name
+  (c) 2012-2018 by Gottfried Mayer https://gma.name
   
-  Uses FastLED to control WS2811 controller chips
+  Uses FastLED to control WS2812b controller chips
   
   Inspiration from here:
   http://www.macetech.com/blog/node/118
@@ -34,8 +34,10 @@ Config_t cnf;
 #include <SPI.h>
 #include <SD.h>
 #include <SerialFlash.h>
-#include <RF24.h>
+//#include <RF24.h>
 #include <gmaRGBLight.h>
+#include <FastLEDGFX.h>
+#include <Fonts/Ubuntu_Regular5pt7b.h>
 #include "nRFMgt.h"
 
 
@@ -43,6 +45,19 @@ Config_t cnf;
 CRGB leds[OCTO_NUM_LEDS];
 CRGBPalette16 currPalette;
 CRGB currColor;
+
+// Font stuff
+void setPixelFunc(uint16_t x, uint16_t y, const struct CRGB & color) {
+  leds[XY(x,y)] = color;
+}
+GFXcanvas fontcanvas(M_WIDTH, M_HEIGHT, setPixelFunc);
+uint8_t hpos = M_WIDTH-1;
+uint8_t showText = 1;
+#define TEXT_1 "SUMMER"
+#define TEXT_2 "TREFFPUNKT"
+#define TEXT_3 "ARBON"
+#define TEXT_4 "2021"
+#define TEXT_5 ""
 
 //effects
 #include "Effect_Fire.h"
@@ -59,6 +74,7 @@ typedef void (*functionList)(); // definition for list of effect function pointe
 functionList effectList[] = {
   eff_noiseParty,
   eff_noiseOcean,
+  eff_noiseOASG,
   eff_noiseGreen,
   eff_fire1,
   eff_fire2,
@@ -77,7 +93,7 @@ functionList effectList[] = {
   eff_whiteSparks,
   //eff_slowRNDLines,
   //eff_quickRNDLines,
-  eff_redwave,
+  //eff_redwave,
   eff_redgreenwave,
   eff_rainbowwave,
   eff_eqColorSnd,
@@ -118,7 +134,7 @@ void setup()
   
   soundForEveryone = 0;
   //RF24 stuff
-  RF_Init();
+//  RF_Init();
   
   //button stuff
 //  modeButton.setClickTicks(300);
@@ -129,11 +145,16 @@ void setup()
   //mode stuff
   cnf.currFrame = 0;
   cnf.currHue = 0;
+  cnf.canShowText = 1;
   autoModeChange = 1;
   lastAutoModeChangeTime = 0;
   //cnf.currMode = 10;  // first mode to run
   cnf.currMode = 2;
   cnf.isModeInit = false;
+
+  // font stuff
+  fontcanvas.setFont(&Ubuntu_Regular5pt7b);
+  fontcanvas.setTextWrap(false);
   
   #ifdef SerialDebug
   Serial.begin(115200);
@@ -149,6 +170,29 @@ void loop() {
   if(LEDS.getBrightness() != cnf.currBright) {  // update global brightness
     LEDS.setBrightness(cnf.currBright);
   }
+
+  // font stuff
+  if(showText > 0 && cnf.canShowText == 1) {
+    fontcanvas.setTextColor(CRGB(210,230,210));  //CHSV(cnf.currHue,255,230));
+    EVERY_N_MILLISECONDS( 100 ) {
+      hpos -= 1;
+      if(hpos == 0) { hpos = M_WIDTH-1; }
+    }
+    fontcanvas.setCursor(hpos, 7);
+    if(showText == 1) { fontcanvas.print(TEXT_1); }
+    if(showText == 2) { fontcanvas.print(TEXT_2); }
+    if(showText == 3) { fontcanvas.print(TEXT_3); }
+    if(showText == 4) { fontcanvas.print(TEXT_4); }
+    if(showText == 5) { fontcanvas.print(TEXT_5); }
+  }
+  EVERY_N_SECONDS(40) {
+    if(showText > 0) {
+      showText = 0;
+    } else {
+      showText = random8(6); // random number 0 - 5
+    }
+  }
+  
   // push pixels to led strip
   LEDS.show();
   // increment currFrame after effect loop - these variables will roll over
@@ -168,12 +212,12 @@ void loop() {
   #endif
   
   //RF24 stuff
-  RF_Read();
+/*  RF_Read();
   
   if(soundForEveryone == 1) {
     RF_SoundForEveryone();
   }
-  
+*/  
   // only check random mode change every currDelay*150 milliseconds, default 1050 ms (one second)
   EVERY_N_SECONDS( 2 ) {
     if(autoModeChange == 1) {

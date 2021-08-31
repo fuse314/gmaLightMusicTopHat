@@ -49,6 +49,7 @@ void eff_fire1() {
     fire_cooling = 45;
     fire_sparking = 120;
     currPalette = HeatColors_p;
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   effectFireCommon();
@@ -60,6 +61,7 @@ void eff_fire2() {
     cnf.currBright = NORMBRIGHT;
     fire_cooling = 70;
     fire_sparking = 170;
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   CRGB _darkcolor  = CHSV(cnf.currHue,255,192); // pure hue, three-quarters brightness
@@ -73,6 +75,7 @@ void eff_soundFire() {
     cnf.currDelay = DELAY_FIRE;
     cnf.currBright = NORMBRIGHT;
     currPalette = HeatColors_p;
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   fire_cooling = map(cnf.eqVol[1],0,255, 40,90);

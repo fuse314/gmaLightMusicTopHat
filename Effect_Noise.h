@@ -100,6 +100,7 @@ void eff_noiseParty() {
     n_z = random16();
     cnf.currDelay = DELAY_SLOW;
     cnf.currBright = LOWBRIGHT;
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   effectNoiseCommon();
@@ -116,6 +117,7 @@ void eff_noiseOcean() {
     n_z = random16();
     cnf.currDelay = DELAY_SLOW;
     cnf.currBright = NORMBRIGHT;
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   effectNoiseCommon();
@@ -136,8 +138,30 @@ void eff_noiseGreen() {
     n_z = random16();
     cnf.currDelay = DELAY_SLOW;
     cnf.currBright = NORMBRIGHT;
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   effectNoiseCommon();
 }
 
+void eff_noiseOASG() {
+  if(!cnf.isModeInit) {
+    fill_solid( currPalette, 16, CRGB::Black);
+    currPalette[0] = CRGB(102,102,224); // blau
+    currPalette[4] = CRGB(255,102,102); // rot
+    currPalette[8] = CRGB(102,102,224); // blau
+    currPalette[12] = CRGB(255,102,102); // rot
+    n_colorLoop = 1;
+    n_speed = 10;
+    n_scale = 20;
+    n_x = random16();
+    n_y = random16();
+    n_z = random16();
+    cnf.currDelay = DELAY_SLOW;
+    cnf.currBright = NORMBRIGHT;
+    cnf.canShowText = 1;
+    cnf.isModeInit = true;
+  }
+
+  effectNoiseCommon();
+}

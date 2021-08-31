@@ -42,6 +42,7 @@ void eff_redwave() {
     sine_color = 1;
     sine_var = 0;
     sine_init_common();
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   sine_step_common();
@@ -58,6 +59,7 @@ void eff_redgreenwave() {
     sine_color = 4;
     sine_var = 550;
     sine_init_common();
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   sine_step_common();
@@ -74,6 +76,7 @@ void eff_rainbowwave() {
     sine_color = 4;
     sine_var = 0;
     sine_init_common();
+    cnf.canShowText = 1;
     cnf.isModeInit = true;
   }
   sine_var = cnf.currFrame;

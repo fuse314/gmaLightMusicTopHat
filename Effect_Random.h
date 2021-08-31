@@ -38,6 +38,7 @@ void eff_colorSparks() {
     cnf.currBright = NORMBRIGHT;
     random_dimspeed = 8;
     currColor = Wheel(random16(768));  // start with random color
+    cnf.canShowText = 0;
     cnf.isModeInit = true;
   }
   dimLeds(random_dimspeed, &leds[OCTO_OFFSET] ,1);
@@ -51,6 +52,7 @@ void eff_whiteSparks() {
     cnf.currDelay = DELAY_SLOW;
     cnf.currBright = NORMBRIGHT;
     random_dimspeed = 16;
+    cnf.canShowText = 0;
     cnf.isModeInit = true;
   }
   dimLeds(random_dimspeed, &leds[OCTO_OFFSET] ,1);
@@ -68,6 +70,7 @@ void eff_slowRNDLines() {
     for(uint8_t i=0; i<RANDOM_NUM_LINES; i++) {
       rnd_initLine(&random_rndLines[i]);      
     }
+    cnf.canShowText = 0;
     cnf.isModeInit = true;
   }
   clearLeds(&leds[OCTO_OFFSET], NUM_LEDS);
@@ -89,6 +92,7 @@ void eff_quickRNDLines() {
     for(uint8_t i=0; i<RANDOM_NUM_LINES; i++) {
       rnd_initLine(&random_rndLines[i]);      
     }
+    cnf.canShowText = 0;
     cnf.isModeInit = true;
   }
   clearLeds(&leds[OCTO_OFFSET], NUM_LEDS);
