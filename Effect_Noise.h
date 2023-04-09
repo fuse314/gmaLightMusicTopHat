@@ -147,10 +147,10 @@ void eff_noiseGreen() {
 void eff_noiseOASG() {
   if(!cnf.isModeInit) {
     fill_solid( currPalette, 16, CRGB::Black);
-    currPalette[0] = CRGB(102,102,224); // blau
-    currPalette[4] = CRGB(255,102,102); // rot
-    currPalette[8] = CRGB(102,102,224); // blau
-    currPalette[12] = CRGB(255,102,102); // rot
+    currPalette[0] = CRGB(221,172,122); // gold
+    currPalette[4] = CRGB(153,40,224); // violett
+    currPalette[8] = CRGB(221,172,122); // gold
+    currPalette[12] = CRGB(153,40,224); // violett
     n_colorLoop = 1;
     n_speed = 10;
     n_scale = 20;

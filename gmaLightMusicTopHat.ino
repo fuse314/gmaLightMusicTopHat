@@ -53,11 +53,11 @@ void setPixelFunc(uint16_t x, uint16_t y, const struct CRGB & color) {
 GFXcanvas fontcanvas(M_WIDTH, M_HEIGHT, setPixelFunc);
 uint8_t hpos = M_WIDTH-1;
 uint8_t showText = 1;
-#define TEXT_1 "SUMMER"
+#define TEXT_1 "MEHSUFF"
 #define TEXT_2 "TREFFPUNKT"
-#define TEXT_3 "ARBON"
+#define TEXT_3 "BIER"
 #define TEXT_4 "2021"
-#define TEXT_5 ""
+#define TEXT_5 "METAL"
 
 //effects
 #include "Effect_Fire.h"
@@ -108,7 +108,7 @@ functionList effectList[] = {
 
 #include "ModeButtonMgt.h"
 
-#define SerialDebug
+//#define SerialDebug
 
 #ifdef SerialDebug
 #include <Streaming.h>
@@ -173,7 +173,7 @@ void loop() {
 
   // font stuff
   if(showText > 0 && cnf.canShowText == 1) {
-    fontcanvas.setTextColor(CRGB(210,230,210));  //CHSV(cnf.currHue,255,230));
+    fontcanvas.setTextColor(CRGB(230,250,230));  //CHSV(cnf.currHue,255,230));
     EVERY_N_MILLISECONDS( 100 ) {
       hpos -= 1;
       if(hpos == 0) { hpos = M_WIDTH-1; }
@@ -251,4 +251,3 @@ uint16_t XY( uint8_t x, uint8_t y)
   }
   return ret + OCTO_OFFSET;
 }
-
