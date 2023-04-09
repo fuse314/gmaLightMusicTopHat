@@ -1,3 +1,5 @@
+#pragma once
+
 #define LEDSPERSTRIP 256
 
 #define M_HEIGHT 8

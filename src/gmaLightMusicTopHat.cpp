@@ -11,6 +11,7 @@
   Codebase from here:
   https://github.com/fuse314/gmaLightMusicHat/
 */
+#include <Arduino.h>
 
 #define USE_OCTOWS2811
 #include<OctoWS2811.h>

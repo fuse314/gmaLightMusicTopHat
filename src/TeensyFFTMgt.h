@@ -3,6 +3,8 @@
 #include <SPI.h>
 #include <SD.h>
 
+#include "zGlobals.h"
+
 #define AUDIO_IN_PIN A3
 #define AUDIO_MAX_RESET_COUNTER 500
 
