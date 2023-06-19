@@ -1,38 +1,47 @@
 // sine interference effect
 
-//mode 1: sine 1 (red)
-//mode 2: sine 2 (multi color)
-//mode 3: sine 3 (variable color)
+// mode 1: sine 1 (red)
+// mode 2: sine 2 (multi color)
+// mode 3: sine 3 (variable color)
 
-uint8_t  sine_dist[M_WIDTH][M_HALFWIDTH];
-int8_t   sine_xoffset;
-int8_t   sine_yoffset;
+uint8_t sine_dist[M_WIDTH][M_HALFWIDTH];
+int8_t sine_xoffset;
+int8_t sine_yoffset;
 uint16_t sine_freq;
 uint16_t sine_speed;
-uint8_t  sine_color;
+uint8_t sine_color;
 uint16_t sine_var;
 
-void sine_init_common() {
+void sine_init_common()
+{
   uint8_t mlt256 = 256 / (M_HALFWIDTH + M_HEIGHT);
-  for(uint8_t y=0; y<M_HEIGHT; y++) {
-    for(uint8_t x=0; x<M_HALFWIDTH; x++) {
-      sine_dist[x][y] = sqrt((x+sine_xoffset)*(x+sine_xoffset) +
-        (y+sine_yoffset)*(y+sine_yoffset)) * mlt256;
+  for (uint8_t y = 0; y < M_HEIGHT; y++)
+  {
+    for (uint8_t x = 0; x < M_HALFWIDTH; x++)
+    {
+      sine_dist[x][y] = sqrt((x + sine_xoffset) * (x + sine_xoffset) +
+                             (y + sine_yoffset) * (y + sine_yoffset)) *
+                        mlt256;
     }
   }
 }
 
-void sine_step_common() {
-  for(uint8_t y=0; y<M_HEIGHT; y++) {
-    for(uint8_t x=0; x<M_HALFWIDTH; x++) {
-      leds[XY(M_HALFWIDTH+x,y)] = leds[XY(M_HALFWIDTH-x-1,y)] = 
-        ColorMap(quadwave8(((sine_dist[x][y] * sine_freq) - (cnf.currFrame * sine_speed)%256)),sine_color,sine_var);
+void sine_step_common()
+{
+  for (uint8_t y = 0; y < M_HEIGHT; y++)
+  {
+    for (uint8_t x = 0; x < M_HALFWIDTH; x++)
+    {
+      leds[XY(M_HALFWIDTH + x, y)] = leds[XY(M_HALFWIDTH - x - 1, y)] =
+          ColorMap(quadwave8(((sine_dist[x][y] * sine_freq) - (cnf.currFrame * sine_speed) % 256)), sine_color, sine_var);
     }
   }
 }
 
-void eff_redwave() {
-  if(!cnf.isModeInit) {
+void eff_redwave()
+{
+  if (!cnf.isModeInit)
+  {
     cnf.currDelay = DELAY_NORMAL;
     cnf.currBright = NORMBRIGHT;
     sine_xoffset = 1;
@@ -48,8 +57,10 @@ void eff_redwave() {
   sine_step_common();
 }
 
-void eff_redgreenwave() {
-  if(!cnf.isModeInit) {
+void eff_redgreenwave()
+{
+  if (!cnf.isModeInit)
+  {
     cnf.currDelay = DELAY_NORMAL;
     cnf.currBright = NORMBRIGHT;
     sine_xoffset = 1;
@@ -65,8 +76,10 @@ void eff_redgreenwave() {
   sine_step_common();
 }
 
-void eff_rainbowwave() {
-  if(!cnf.isModeInit) {
+void eff_rainbowwave()
+{
+  if (!cnf.isModeInit)
+  {
     cnf.currDelay = DELAY_NORMAL;
     cnf.currBright = NORMBRIGHT;
     sine_xoffset = -8;
@@ -82,4 +95,3 @@ void eff_rainbowwave() {
   sine_var = cnf.currFrame;
   sine_step_common();
 }
-
