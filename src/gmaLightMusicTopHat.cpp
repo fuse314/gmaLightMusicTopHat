@@ -92,8 +92,6 @@ functionList effectList[] = {
 
 #include "ModeButtonMgt.h"
 
-// #define SerialDebug
-
 #ifdef SerialDebug
 #include <Streaming.h>
 #endif

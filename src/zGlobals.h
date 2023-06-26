@@ -1,5 +1,7 @@
 #pragma once
 
+#define SerialDebug
+
 #define LEDSPERSTRIP 256
 
 #define M_HEIGHT 8
