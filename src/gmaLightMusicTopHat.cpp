@@ -155,7 +155,7 @@ void loop()
   }
 
   // font stuff
-  drawText(showText, cnf.canShowText);
+  drawText(cnf.canShowText);
 
   // push pixels to led strip
   LEDS.show();

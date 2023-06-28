@@ -6,14 +6,15 @@
 
 // Font stuff
 GFXcanvas1 fontcanvas(M_TXTWIDTH, M_HEIGHT);
-uint8_t hpos = M_HALFWIDTH - 1;
+uint8_t hpos = 1;
 uint8_t showText = 1;
 uint8_t prevText = 0;
-#define TEXT_1 "OASG"
+CRGB textColor = CRGB(230, 250, 230);
+#define TEXT_1 "OASG 2023"
 #define TEXT_2 "TREFFPUNKT"
 #define TEXT_3 "BIER"
-#define TEXT_4 "2023"
-#define TEXT_5 "ROCK ON"
+#define TEXT_4 "ROCK ON"
+#define TEXT_5 "2023"
 
 void initText()
 {
@@ -22,8 +23,21 @@ void initText()
   fontcanvas.setTextColor(1);
 }
 
-void drawText(uint8_t showText, uint8_t canShowText)
+void drawText(uint8_t canShowText)
 {
+   // hide text or show different text every 40 seconds.
+  EVERY_N_SECONDS(40)
+  {
+    if (showText > 0)
+    {
+      showText = 0;
+    }
+    else
+    {
+      showText = random8(6); // random number 0 - 5
+    }
+  }
+
   if (canShowText == 0)
   {
     return;
@@ -61,15 +75,14 @@ void drawText(uint8_t showText, uint8_t canShowText)
     uint16_t text_end = abs(min(fontcanvas.getCursorX() + 7, M_TXTWIDTH));
     EVERY_N_MILLISECONDS(100)
     {
-      hpos += 1;
-      if (hpos >= M_WIDTH)
+      hpos--;
+      if (hpos == 0)
       {
-        hpos = 0;
+        hpos = text_end;
       }
     }
 
     // transfer gfx buffer to LEDs
-    CRGB textColor = CRGB(230, 250, 230);
     for (uint8_t copyy = 0; copyy < M_HEIGHT; copyy++)
     {
       for (int16_t x = 0; x < M_WIDTH; x++)
@@ -86,22 +99,9 @@ void drawText(uint8_t showText, uint8_t canShowText)
         }
         if (fontcanvas.getPixel(copyx, copyy)) // make sure pixel is not black
         {
-          leds[XY(copyx, copyy)] = textColor;
+          leds[XY(x, copyy)] = textColor;
         }
       }
-    }
-  }
-
-  // hide text or show different text every 40 seconds.
-  EVERY_N_SECONDS(40)
-  {
-    if (showText > 0)
-    {
-      showText = 0;
-    }
-    else
-    {
-      showText = random8(6); // random number 0 - 5
     }
   }
 }

@@ -68,7 +68,7 @@ void CheckAutoModeChange()
     if(cnf.currMode >= numEffects) {
       cnf.currMode = 0;
     }*/
-    cnf.currMode = random8(numEffects); // random number including 0, excluding MAX_MODE
+    cnf.currMode = random16(numEffects); // random number including 0, excluding MAX_MODE
     cnf.isModeInit = false;
   }
 }
